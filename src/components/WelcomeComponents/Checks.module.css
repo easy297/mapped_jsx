@@ -1,0 +1,32 @@
+/* Checks */
+
+.checks {
+  padding: 150px 0;
+  background: rgba(23, 22, 22, 1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item {
+  color: #fff5f5;
+  text-align: center;
+  font-family: Space Grotesk;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: capitalize;
+  max-width: 236px;
+}
+
+.item img {
+  max-width: 60px;
+  max-height: 60px;
+}

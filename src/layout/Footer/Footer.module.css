@@ -1,0 +1,94 @@
+.wrapper {
+    /* background-image: url("../../assets/earth-bg.png");
+    background-repeat: no-repeat;
+    background-size: cover; */
+    background-color: #0b1b24;
+    background-position:top;
+}
+
+.footer {
+    font-family: Consolas, serif;
+    color: #807d7d;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 70px;
+    padding-top: 100px;
+}
+
+.left {
+    max-width: 600px;
+    padding: 50px 0;
+}
+
+.logo {
+    margin-bottom: 15px;
+}
+
+.subtitle {
+    color: #FFF;
+    font-size: 20px;
+}
+
+.subtext {
+    font-size: 18px;
+}
+
+.button {
+    font-size: 16px;
+    color: #FFF;
+    padding: 10px 30px;
+    border: 1px solid #807d7d;
+    margin-top: 30px;
+    transition: all .3s;
+}
+
+.button:hover {
+    border: 2px solid #FFF;
+}
+
+.info {
+    text-align: left;
+    line-height: 40px;
+}
+
+.title {
+    font-size: 22px;
+}
+
+.text {
+    display: block;
+    color: #807d7d;
+    transition: color .3s linear;
+}
+
+.text:hover {
+    color: #dbcfcf;
+}
+
+.endline {
+    background-color: #161515;
+    margin-top: 30px;
+}
+
+.inner {
+    display: flex;
+    font-size: 12px;
+    padding: 15px 0;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.copyright {
+    display: flex;
+    column-gap: 50px;
+}
+
+.socials {
+    display: flex;
+    column-gap: 20px;
+}
+
+.img {
+    width: 20px;
+    height: 20px;
+}

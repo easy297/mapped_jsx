@@ -1,0 +1,47 @@
+.discover {
+    text-align: center;
+    background-color: #031225;
+    padding-top: 100px;
+  }
+  
+  .title {
+    border: 2px solid rgba(191, 184, 184, 0.7);
+    padding: 22px 83px;
+    display: inline-block;
+    text-align: center;
+    font-family: Space Grotesk;
+    font-size: 30px;
+    font-weight: 700;
+    text-transform: capitalize;
+    margin-bottom: 50px;
+  }
+  
+  .info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .text {
+    max-width: 707px;
+    font-family: Space Grotesk;
+    text-align: left;
+  }
+  
+  .subtitle {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 32px;
+  }
+  
+  .subtitleGray {
+    color: #8d8989;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 25px; /* 125% */
+    margin: 40px 0;
+  }
+  
+.img {
+    margin-bottom: 30px;
+}

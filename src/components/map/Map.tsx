@@ -4,7 +4,7 @@ import style from "./Map.module.scss";
 
 const Map = () => {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "api",
+    googleMapsApiKey: "AIzaSyCcMxkTm1oDjM_AkRxf0f-Jgd_d86nq1J0",
   });
   const center = useMemo(
     () => ({ lat: 43.24417807387171, lng: 76.85739059645189 }),

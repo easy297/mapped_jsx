@@ -45,7 +45,7 @@ const Front = () => {
                   Journal
                 </p>
                 <button className="btn">
-                  <a href="/signup">Make a pin</a>
+                  <a href="/registration">Make a pin</a>
                 </button>
               </div>
             </div>

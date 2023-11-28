@@ -12,24 +12,19 @@ const SignUp = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+
   const onSignUp = async (e) => {
+
     e.preventDefault();
-    console.log("Signing up...", email, password, confirmPassword, username);
     setError(null);
-    setLoading(false);
+    setLoading(true);
+
+    console.log("Email:", email);
+    console.log("Password:", password);
+    console.log("Confirm Password:", confirmPassword);
+    console.log("Username:", username);
 
     try {
-      console.log("Email:", email);
-      console.log("Password:", password);
-      console.log("Confirm Password:", confirmPassword);
-      console.log("Username:", username);
-
-      // if (password.trim() !== confirmPassword.trim()) {
-      //   setLoading(false);
-      //   setError("Passwords do not match");
-      //   return;
-      // }
-
 
       const response = await fetch("http://localhost:8080/registration", {
         method: "POST",
@@ -57,8 +52,11 @@ const SignUp = () => {
     } catch (error) {
       console.error("Error:", error.message);
       setError(error.message || "Sign up failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
+
 
   return (
       <>
@@ -84,18 +82,6 @@ const SignUp = () => {
               <h1 className={style.title}>
                 Welcome to Mapped! <br /> Let’s begin the adventure
               </h1>
-
-              {/*<div className={style.inputs1}>*/}
-              {/*  <label htmlFor="email" className={style.label}>*/}
-              {/*    Enter your email**/}
-              {/*  </label>*/}
-              {/*  <div className={style.inputWrap}>*/}
-              {/*    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" viewBox="0 0 24 24">*/}
-              {/*      <path d="m18.541,10.894l-4.717-4.717-.707.707,4.616,4.617H5v1h12.735l-4.618,4.617.707.707,4.717-4.716c.296-.296.459-.69.459-1.108s-.163-.812-.459-1.106Z" />*/}
-              {/*    </svg>*/}
-              {/*    <input type="email" className={style.input} />*/}
-              {/*  </div>*/}
-              {/*</div>*/}
 
               <div className={style.inputs1}>
                 <label htmlFor="email" className={style.label}>
@@ -123,7 +109,12 @@ const SignUp = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" viewBox="0 0 24 24">
                     <path d="m18.541,10.894l-4.717-4.717-.707.707,4.616,4.617H5v1h12.735l-4.618,4.617.707.707,4.717-4.716c.296-.296.459-.69.459-1.108s-.163-.812-.459-1.106Z" />
                   </svg>
-                  <input type="password" className={style.input} />
+                  <input
+                      type="password"
+                      className={style.input}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                  />
                 </div>
               </div>
 
@@ -152,10 +143,14 @@ const SignUp = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" viewBox="0 0 24 24">
                     <path d="m18.541,10.894l-4.717-4.717-.707.707,4.616,4.617H5v1h12.735l-4.618,4.617.707.707,4.717-4.716c.296-.296.459-.69.459-1.108s-.163-.812-.459-1.106Z" />
                   </svg>
-                  <input type="text" className={style.input} />
+                  <input
+                      type="text"
+                      className={style.input}
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                  />
                 </div>
               </div>
-
 
               <div className={style.btnWrap}>
                 <button

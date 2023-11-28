@@ -14,11 +14,15 @@ const Map = () => {
         googleMapsApiKey: "AIzaSyCcMxkTm1oDjM_AkRxf0f-Jgd_d86nq1J0",
     });
 
-    const center = {
-        lat: 43.24417807387171,
-        lng: 76.85739059645189
-    };
+    // const center = {
+    //     lat: 43.24417807387171,
+    //     lng: 76.85739059645189
+    // };
 
+    const center = useMemo<LatLngLiteral>(
+        () => ({ lat: 43.24417807387171, lng: 76.85739059645189 }),
+        []
+    );
     const options = useMemo(
         () => ({
             disableDefaultUI: true,
@@ -34,7 +38,7 @@ const Map = () => {
 
     const fetchPins = async () => {
         try {
-            const response = await fetch('http://localhost:8080/mapped/api')
+            const response = await fetch('http://localhost:8080/mapped/pins')
             const pinsData = await response.json();
             setPins(pinsData);
         } catch (error) {
@@ -43,19 +47,28 @@ const Map = () => {
     };
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
-        const newPin = {
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng(),
-        };
+        try {
+            if (event && event.latLng) {
+                const newPin: LatLngLiteral = {
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng(),
+                };
 
-        setPins((prevPins) => [...prevPins, newPin]);
-        setCurrentPin(newPin);
-        setInfoWindowOpen(true);
-        setMessage(""); // Reset the message when a new pin is clicked
+                setPins((prevPins) => [...prevPins, { ...newPin, message: "" }]);
+                setCurrentPin(null); // Reset currentPin to null
+                setInfoWindowOpen(true);
+                setMessage(""); // Reset the message when a new pin is clicked
+            }
+        } catch (error) {
+            console.error('Error handling map click:', error);
+        }
     };
+
+
 
     const handleInfoWindowClose = () => {
         setInfoWindowOpen(false);
+        setCurrentPin(null);
         if (!currentPin)
             setMessage("");
     };
@@ -64,26 +77,36 @@ const Map = () => {
         setMessage(event.target.value);
     };
 
+
+
     const handleSaveMessage = async () => {
         try {
-            const response = await fetch('http://localhost:8080/mapped/savePin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    latitude: currentPin?.lat,
-                    longitude: currentPin?.lng,
-                    message: message,
-                }),
-            });
+            if (currentPin && typeof currentPin.lat === 'number' && typeof currentPin.lng === 'number') {
+                const response = await fetch('http://localhost:8080/mapped/savePin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        latitude: currentPin.lat,
+                        longitude: currentPin.lng,
+                        message: message,
+                    }),
+                });
 
-            if (response.status === 201) {
-                console.log('Pin saved successfully');
-                // Fetch updated list of pins after saving
-                fetchPins();
-            } else {
-                console.error('Failed to save pin');
+                if (response.status === 201) {
+                    console.log('Pin saved successfully');
+                    // Update the message for the current pin in the pins state
+                    setPins((prevPins) =>
+                        prevPins.map((pin) =>
+                            pin.lat === currentPin.lat && pin.lng === currentPin.lng
+                                ? { ...pin, message: message }
+                                : pin
+                        )
+                    );
+                } else {
+                    console.error('Failed to save pin');
+                }
             }
         } catch (error) {
             console.error('Error saving pin:', error);
@@ -92,6 +115,8 @@ const Map = () => {
             setMessage("");
         }
     };
+
+
 
     if (!isLoaded) {
         return <h1>Loading...</h1>;
@@ -103,9 +128,9 @@ const Map = () => {
                 mapContainerClassName={style.mapContainer}
                 center={center}
                 zoom={10}
-                onClick={handleMapClick}
+                onClick={handleMapClick} // Assign the handleMapClick function to onClick
             >
-                {pins && pins.map((pin, index) => (
+                {pins.map((pin, index) => (
                     <Marker
                         key={index}
                         position={pin}
@@ -115,15 +140,15 @@ const Map = () => {
                         }}
                     />
                 ))}
-                {currentPin && (
-                    <Marker
-                        position={currentPin}
-                        onClick={() => {
-                            setCurrentPin(currentPin);
-                            setInfoWindowOpen(true);
-                        }}
-                    />
-                )}
+                    {currentPin && (
+                        <Marker
+                            position={currentPin}
+                            onClick={() => {
+                                setCurrentPin(currentPin);
+                                setInfoWindowOpen(true);
+                            }}
+                        />
+                    )}
                 {infoWindowOpen && currentPin && (
                     <InfoWindow
                         position={currentPin}
@@ -142,12 +167,15 @@ const Map = () => {
                                 style={{ color: "black" }}
                             />
                             <button onClick={handleSaveMessage}>Save Message</button>
+                            {currentPin.message && <p>{currentPin.message}</p>}
                         </div>
                     </InfoWindow>
                 )}
+
             </GoogleMap>
         </div>
     );
+
 };
 
 export default Map;
